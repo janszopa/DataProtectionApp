@@ -9,12 +9,19 @@
 </head>
 <body>
   <h2">Rejestracja</h2>
+  {% if errors %}
+  <ul>
+    {% for error in errors %}
+      <li style="color: red;">{{ error }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
   <form method="post" action="{% url 'register' %}">
     {% csrf_token %}
-    <input type="text" name="username" placeholder="Nazwa użytkownika" required>
-    <input type="email" name="email" placeholder="E-mail" required>
-    <input type="password" name="password" placeholder="Hasło" required>
-    <button type="submit">Zarejestruj</button>
+    <p><input type="text" name="username" placeholder="Nazwa użytkownika" required></p>
+    <p><input type="email" name="email" placeholder="E-mail" required></p>
+    <p><input type="password" name="password" placeholder="Hasło" required></p>
+    <p><button type="submit">Zarejestruj</button></p>
   </form>
   <p><a href="{% url 'login' %}">Powrót do logowania</a></p>
 </body>

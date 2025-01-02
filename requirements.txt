@@ -3,3 +3,5 @@ psycopg2-binary==2.9.8
 pycryptodomex
 djangorestframework
 argon2-cffi
+django-axes
+pyotp

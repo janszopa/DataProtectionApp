@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',
+    'axes',
 ]
 
 MIDDLEWARE = [
@@ -48,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'axes.middleware.AxesMiddleware',
 ]
 
 REST_FRAMEWORK = {
@@ -101,15 +103,22 @@ DATABASES = {
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'OPTIONS': {
+            'user_attributes': ('username', 'email'),  # Atrybuty użytkownika, które porównujemy z hasłem
+            'max_similarity': 0.7,  # Maksymalne dozwolone podobieństwo
+        },
     },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    # },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator', # Porównujemy hasło z domyślną listą Django, z najpowszechniejszymi hasłami 
     },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    # },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': 'app.validators.CustomPasswordValidator',
     },
 ]
 
@@ -143,3 +152,17 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+AUTHENTICATION_BACKENDS = [
+    'axes.backends.AxesStandaloneBackend', 
+    'django.contrib.auth.backends.ModelBackend',  # Domyślny backend Django
+]
+
+AXES_USERNAME_FAILURE_LIMIT = 5  # Limit prób logowania dla jednego użytkownika
+AXES_COOLOFF_TIME = 1  # Czas blokady w godzinach
+AXES_LOCK_OUT_AT_FAILURE = True  # Blokuj po przekroczeniu limitu
+AXES_FAILURE_LIMIT_METHOD = 'username'  # Limit liczony na podstawie nazw użytkowników
+AXES_CLIENT_IP_ATTRIBUTE = 'HTTP_X_FORWARDED_FOR' # Gdy korzystamy z proxy
+AXES_RESET_ON_SUCCESS = True  # Resetuj liczbę prób po poprawnym logowaniu
+

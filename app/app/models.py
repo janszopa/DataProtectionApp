@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.contrib.auth.models import User
 from Cryptodome.PublicKey import RSA
 from Cryptodome.Signature import pkcs1_15
 from Cryptodome.Hash import SHA256
