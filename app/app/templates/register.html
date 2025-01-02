@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rejestracja</title>
+  <link rel="stylesheet" href="{% static 'static/css/styles.css' %}">
+</head>
+<body>
+  <h2">Rejestracja</h2>
+  <form method="post" action="{% url 'register' %}">
+    {% csrf_token %}
+    <input type="text" name="username" placeholder="Nazwa użytkownika" required>
+    <input type="email" name="email" placeholder="E-mail" required>
+    <input type="password" name="password" placeholder="Hasło" required>
+    <button type="submit">Zarejestruj</button>
+  </form>
+  <p><a href="{% url 'login' %}">Powrót do logowania</a></p>
+</body>
+</html>
+

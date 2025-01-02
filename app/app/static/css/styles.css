@@ -1,0 +1,59 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center; 
+    align-items: center;    
+    margin: 0;
+    background-color: #f4f4f4;
+  }
+  
+  .messages {
+    margin-top: 20px;
+  }
+
+  .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column; /* Ustaw układ na pionowy */
+    gap: 10px; /* Odstępy między polami */
+    width: 100%;
+    border-radius: 5px;
+    margin: 0 auto; /* Wyśrodkowanie formularza */
+  }
+  
+  /* Stylizacja pól formularza */
+  input, textarea, button {
+    font-size: 16px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%; /* Pełna szerokość */
+  }
+  
+  /* Stylizacja przycisków */
+  button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Wyśrodkowanie tekstów i linków */
+  a {
+    text-align: center;
+    display: block;
+    margin-top: 10px;
+    color: #007BFF;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
