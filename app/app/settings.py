@@ -159,7 +159,7 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',  # Domyślny backend Django
 ]
 
-AXES_USERNAME_FAILURE_LIMIT = 5  # Limit prób logowania dla jednego użytkownika
+AXES_USERNAME_FAILURE_LIMIT = 10  # Limit prób logowania dla jednego użytkownika
 AXES_COOLOFF_TIME = 1  # Czas blokady w godzinach
 AXES_LOCK_OUT_AT_FAILURE = True  # Blokuj po przekroczeniu limitu
 AXES_FAILURE_LIMIT_METHOD = 'username'  # Limit liczony na podstawie nazw użytkowników

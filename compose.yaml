@@ -3,8 +3,8 @@
 services:
   web:
     build: .
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     volumes:
       - ./app:/usr/src/app
     depends_on:
@@ -21,6 +21,18 @@ services:
       POSTGRES_DB: appdb
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"    # Przekierowanie HTTP
+      - "443:443"  # Przekierowanie HTTPS
+    depends_on:
+      - web
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf  # Konfiguracja NGINX
+      - ./nginx/certs:/etc/ssl/certs                      # Certyfikaty SSL
+      - ./nginx/private:/etc/ssl/private                  # Klucz prywatny SSL
 
 volumes:
   postgres_data:
