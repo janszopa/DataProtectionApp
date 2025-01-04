@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Włącz 2FA</title>
+</head>
+<body>
+    <h2>Włącz weryfikację dwuetapową</h2>
+    <p>Zeskanuj kod QR w aplikacji Google Authenticator:</p>
+    <img src="https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl={{ qr_url }}" alt="QR Code">
+    <a href="{% url 'login' %}">Zakończ rejestrację</a>
+</body>
+</html>

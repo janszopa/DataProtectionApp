@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from Cryptodome.PublicKey import RSA
 from Cryptodome.Signature import pkcs1_15
 from Cryptodome.Hash import SHA256
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class Message(models.Model):
     # Powiązanie z użytkownikiem korzystającym z wbudowanego modelu auth_user
@@ -31,3 +33,16 @@ class Message(models.Model):
     #         return True
     #     except (ValueError, TypeError):
     #         return False
+    
+    class UserProfile(models.Model):
+        user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+        totp_secret = models.CharField(max_length=32, blank=True, null=True)
+
+    @receiver(post_save, sender=User)
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            UserProfile.objects.create(user=instance)
+
+    @receiver(post_save, sender=User)
+    def save_user_profile(sender, instance, **kwargs):
+        instance.profile.save()
