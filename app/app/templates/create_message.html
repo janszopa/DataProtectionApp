@@ -5,17 +5,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tworzenie wiadomości</title>
-  <link rel="stylesheet" href="{% static 'static/css/styles.css' %}">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-  <h2>Tworzenie wiadomości</h2>
-  <form method="post" action="{% url 'create_message' %}">
-    {% csrf_token %}
-    <textarea name="content" placeholder="Treść wiadomości" required></textarea>
-    <input type="text" name="private_key" placeholder="Klucz prywatny" required>
-    <button type="submit">Dodaj wiadomość</button>
-  </form>
-  <p><a href="{% url 'messages' %}">Powrót do wiadomości</a></p>
+  <div>
+    <h1>Tworzenie wiadomości</h1>
+    <form method="post" action="{% url 'create_message' %}">
+      {% csrf_token %}
+      <textarea name="content" placeholder="Treść wiadomości" required></textarea>
+      <input type="text" name="private_key" placeholder="Klucz prywatny" required>
+      <button type="submit">Dodaj wiadomość</button>
+    </form>
+    <p><a href="{% url 'messages' %}">Powrót do wiadomości</a></p>
+  </div>
 </body>
 </html>
 

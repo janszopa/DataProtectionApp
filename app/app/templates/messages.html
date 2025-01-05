@@ -5,17 +5,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wiadomości</title>
-  <link rel="stylesheet" href="{% static 'static/css/styles.css' %}">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-  <h2>Lista wiadomości</h2>
-  <ul>
-    {% for message in messages %}
-      <li><strong>{{ message.user.username }}</strong>: {{ message.content }}</li>
-    {% endfor %}
-  </ul>
-  <p><a href="{% url 'create_message' %}">Dodaj wiadomość</a></p>
-  <p><a href="{% url 'logout' %}">Wyloguj</a></p>
+  <div>
+    <h1>Witaj, {{ user.username }}!</h1>
+    <h2>Lista wiadomości:</h2>    
+    {% if messages %}
+    <ul>
+      {% for message in messages %}
+        <li><strong>{{ message.user.username }}</strong>: {{ message.content }}</li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p>Brak wiadomości do wyświetlenia.</p>
+    {% endif %}
+    
+    <p>
+      <a href="{% url 'create_message' %}">Dodaj nową wiadomość</a>
+      <a href="{% url 'profile' %}">Mój profil</a>
+      <a href="{% url 'logout' %}">Wyloguj</a>
+    </p>
+  </div>
 </body>
 </html>
+
 

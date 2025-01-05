@@ -34,15 +34,15 @@ class Message(models.Model):
     #     except (ValueError, TypeError):
     #         return False
     
-    class UserProfile(models.Model):
-        user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-        totp_secret = models.CharField(max_length=32, blank=True, null=True)
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    totp_secret = models.CharField(max_length=32, blank=True, null=True)
 
-    @receiver(post_save, sender=User)
-    def create_user_profile(sender, instance, created, **kwargs):
-        if created:
-            UserProfile.objects.create(user=instance)
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
 
-    @receiver(post_save, sender=User)
-    def save_user_profile(sender, instance, **kwargs):
-        instance.profile.save()
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()

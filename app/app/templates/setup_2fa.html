@@ -8,7 +8,7 @@
 <body>
     <h2>Włącz weryfikację dwuetapową</h2>
     <p>Zeskanuj kod QR w aplikacji Google Authenticator:</p>
-    <img src="https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl={{ qr_url }}" alt="QR Code">
+    <img src="data:image/png;base64,{{ qr_base64 }}" alt="Kod QR">
     <a href="{% url 'login' %}">Zakończ rejestrację</a>
 </body>
 </html>

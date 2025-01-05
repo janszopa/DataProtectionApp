@@ -153,6 +153,10 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://localhost',
+    #'https://127.0.0.1',
+]
 
 AUTHENTICATION_BACKENDS = [
     'axes.backends.AxesStandaloneBackend', 
@@ -166,3 +170,4 @@ AXES_FAILURE_LIMIT_METHOD = 'username'  # Limit liczony na podstawie nazw użytk
 AXES_CLIENT_IP_ATTRIBUTE = 'HTTP_X_FORWARDED_FOR' # Gdy korzystamy z proxy
 AXES_RESET_ON_SUCCESS = True  # Resetuj liczbę prób po poprawnym logowaniu
 
+LOGIN_URL = '/'

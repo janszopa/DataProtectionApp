@@ -5,3 +5,5 @@ djangorestframework
 argon2-cffi
 django-axes
 pyotp
+qrcode
+Pillow

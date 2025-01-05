@@ -5,25 +5,34 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rejestracja</title>
-  <link rel="stylesheet" href="{% static 'static/css/styles.css' %}">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-  <h2">Rejestracja</h2>
-  {% if errors %}
-  <ul>
-    {% for error in errors %}
-      <li style="color: red;">{{ error }}</li>
-    {% endfor %}
-  </ul>
-  {% endif %}
-  <form method="post" action="{% url 'register' %}">
-    {% csrf_token %}
-    <p><input type="text" name="username" placeholder="Nazwa użytkownika" required></p>
-    <p><input type="email" name="email" placeholder="E-mail" required></p>
-    <p><input type="password" name="password" placeholder="Hasło" required></p>
-    <p><button type="submit">Zarejestruj</button></p>
-  </form>
-  <p><a href="{% url 'login' %}">Powrót do logowania</a></p>
+  <div class="login-container">
+    <h1>Rejestracja</h1>
+    {% if errors %}
+    <ul style="color: red; list-style-type: none; padding: 0;">
+      {% for error in errors %}
+        <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    <form method="post" action="{% url 'register' %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <input type="text" id="username" name="username" placeholder="Nazwa użytkownika" required>
+      </div>
+      <div class="form-group">
+        <input type="email" id="email" name="email" placeholder="E-mail" required>
+      </div>
+      <div class="form-group">
+        <input type="password" id="password" name="password" placeholder="Hasło" required>
+      </div>
+      <button type="submit" class="btn">Zarejestruj</button>
+    </form>
+    <a href="{% url 'login' %}" class="register-link">Wróć do logowania</a>
+  </div>
 </body>
 </html>
+
 
