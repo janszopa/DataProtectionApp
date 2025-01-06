@@ -8,35 +8,24 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 class Message(models.Model):
-    # Powiązanie z użytkownikiem korzystającym z wbudowanego modelu auth_user
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="messages")
     content = models.TextField() 
-    #signature = models.TextField(blank=True, null=True) 
     created_at = models.DateTimeField(auto_now_add=True)
+    is_verified = models.BooleanField(default=False)
 
-    # def sign_message(self, private_key):
-    #     """
-    #     Tworzenie podpisu cyfrowego wiadomości przy użyciu klucza prywatnego.
-    #     """
-    #     key = RSA.import_key(private_key)
-    #     h = SHA256.new(self.content.encode('utf-8'))
-    #     self.signature = pkcs1_15.new(key).sign(h).hex()
-
-    # def verify_signature(self, public_key):
-    #     """
-    #     Weryfikacja podpisu cyfrowego przy użyciu klucza publicznego.
-    #     """
-    #     key = RSA.import_key(public_key)
-    #     h = SHA256.new(self.content.encode('utf-8'))
-    #     try:
-    #         pkcs1_15.new(key).verify(h, bytes.fromhex(self.signature))
-    #         return True
-    #     except (ValueError, TypeError):
-    #         return False
+    
     
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     totp_secret = models.CharField(max_length=32, blank=True, null=True)
+    rsa_public_key = models.TextField(blank=True, null=True)  
+    rsa_private_key = models.TextField(blank=True, null=True) 
+
+    def generate_rsa_keys(self):
+        key = RSA.generate(2048)
+        self.rsa_private_key = key.export_key().decode('utf-8')
+        self.rsa_public_key = key.publickey().export_key().decode('utf-8')
+        self.save()
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

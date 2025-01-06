@@ -98,9 +98,16 @@ def verify_2fa_view(request):
     return render(request, 'verify_2fa.html')
 
 # Zmiana hasła
+@login_required
 def profile_view(request):
-    if not request.user.is_authenticated:
-        return redirect('login')
+    if request.method == 'POST':
+        user_profile = request.user.profile
+        if not user_profile.rsa_public_key or not user_profile.rsa_private_key:
+            user_profile.generate_rsa_keys()
+            messages.success(request, 'Wygenerowano klucze RSA!')
+        else:
+            messages.error(request, 'Klucze RSA już istnieją.')
+        return redirect('profile')
 
     return render(request, 'profile.html', {'user': request.user})
 
