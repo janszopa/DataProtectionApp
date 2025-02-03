@@ -14,7 +14,10 @@
     {% if messages %}
     <ul>
       {% for message in messages %}
-        <li><strong>{{ message.user.username }}</strong>: {{ message.content }}</li>
+        <li>
+          <strong>{{ message.user.username }}</strong>: {{ message.content }}
+          <a href="{% url 'verify_message' message.id %}">Zweryfikuj autora</a>
+        </li>
       {% endfor %}
     </ul>
     {% else %}

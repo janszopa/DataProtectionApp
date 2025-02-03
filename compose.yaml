@@ -21,6 +21,8 @@ services:
       POSTGRES_DB: appdb
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"  # Mapowanie portów kontenera na hosta, dla data azure studio
 
   nginx:
     image: nginx:latest

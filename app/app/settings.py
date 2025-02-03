@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,13 +22,39 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-it&pxl8st^h4fxm9b3ewoe_o+=a3&#d&!uqkqkbxs9is@0bb5y'
+SECRET_KEY = config("SECRET_KEY")
 
+TOTP_ENCRYPTION_KEY = config('TOTP_ENCRYPTION_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
+#Ochrona przed atakami typu Clickjacking, dodaje nagłówek X-Frame-Options: DENY
+X_FRAME_OPTIONS = 'DENY'
+
+#Wymuszamy przesyłanie ciasteczek tylko przez HTTPS
+SESSION_COOKIE_SECURE = True
+
+#Ciasteczka nie dostępne z poziomu JavaScript, będą dostępne tylko dla serwera
+SESSION_COOKIE_HTTPONLY = True
+
+#Ograniczamy sposób przesyłania ciasteczek, Lax - 
+SESSION_COOKIE_SAMESITE = 'Lax'
+
+#CSP - Content Security Policy
+
+#Wysyła nagłówek X-Content-Type-Options: nosniff, uniemożliwia przeglądarce zgadywanie typu pliku
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+#zasoby mogą być ładowane tylko z tej samej domeny
+CSP_DEFAULT_SRC = ("'self'",)
+
+# pozwalamy na ładowanie skryptów z tej samej domeny i inline w html, nie używam js więc tylko edukacjynie
+#CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'")
+
+# pozwalamy na ładowanie css z tej samej domeny i inline w html
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
 
 # Application definition
 
@@ -39,6 +67,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app',
     'axes',
+    'csp',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +79,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'axes.middleware.AxesMiddleware',
+    'csp.middleware.CSPMiddleware',
 ]
 
 REST_FRAMEWORK = {
@@ -86,14 +116,9 @@ WSGI_APPLICATION = 'app.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'appdb',
-        'USER': 'user',
-        'PASSWORD': 'password',
-        'HOST': 'db',
-        'PORT': 5432,
-    }
+    'default': dj_database_url.config(
+        default=config("DATABASE_URL")
+    )
 }
 
 
@@ -108,22 +133,16 @@ AUTH_PASSWORD_VALIDATORS = [
             'max_similarity': 0.7,  # Maksymalne dozwolone podobieństwo
         },
     },
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    # },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator', # Porównujemy hasło z domyślną listą Django, z najpowszechniejszymi hasłami 
     },
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    # },
     {
         'NAME': 'app.validators.CustomPasswordValidator',
     },
 ]
 
 PASSWORD_HASHERS = [
-    'django.contrib.auth.hashers.Argon2PasswordHasher', # Tego używamy przy tworzeniu nowych 
+    'django.contrib.auth.hashers.Argon2PasswordHasher', 
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
     'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
@@ -155,7 +174,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CSRF_TRUSTED_ORIGINS = [
     'https://localhost',
-    #'https://127.0.0.1',
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -163,11 +181,11 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',  # Domyślny backend Django
 ]
 
-AXES_USERNAME_FAILURE_LIMIT = 10  # Limit prób logowania dla jednego użytkownika
-AXES_COOLOFF_TIME = 1  # Czas blokady w godzinach
-AXES_LOCK_OUT_AT_FAILURE = True  # Blokuj po przekroczeniu limitu
-AXES_FAILURE_LIMIT_METHOD = 'username'  # Limit liczony na podstawie nazw użytkowników
-AXES_CLIENT_IP_ATTRIBUTE = 'HTTP_X_FORWARDED_FOR' # Gdy korzystamy z proxy
-AXES_RESET_ON_SUCCESS = True  # Resetuj liczbę prób po poprawnym logowaniu
+AXES_FAILURE_LIMIT = 10  
+AXES_COOLOFF_TIME = 1  #w godzinach
+AXES_LOCK_OUT_AT_FAILURE = True  
+AXES_LOCKOUT_PARAMETERS = ['username']
+AXES_CLIENT_IP_ATTRIBUTE = 'HTTP_X_FORWARDED_FOR' # proxy
+AXES_RESET_ON_SUCCESS = True  
 
 LOGIN_URL = '/'

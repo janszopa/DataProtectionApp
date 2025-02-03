@@ -10,13 +10,23 @@
 <body>
   <div>
     <h1>Tworzenie wiadomości</h1>
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% endif %}
     <form method="post" action="{% url 'create_message' %}">
       {% csrf_token %}
+      <label for="content">Wprowadź treść wiadomości:</label>
       <textarea name="content" placeholder="Treść wiadomości" required></textarea>
-      <input type="text" name="private_key" placeholder="Klucz prywatny" required>
-      <button type="submit">Dodaj wiadomość</button>
+
+      <label for="private_key">Wprowadź klucz prywatny (RSA):</label>
+      <textarea name="private_key" placeholder="Klucz prywatny (RSA)" required></textarea>
+
+      <label for="public_key">Wprowadź klucz publiczny (RSA), jeśli klucz został już wprowadzony w poprzednich wiadomościach, możesz zostawić to pole puste:</label>
+      <textarea name="public_key" placeholder="Klucz publiczny (RSA)"></textarea>
+
+      <button type="submit" name="sign">Podpisz i wyślij</button>
     </form>
-    <p><a href="{% url 'messages' %}">Powrót do wiadomości</a></p>
+    <p><a href="{% url 'messages' %}">Powrót</a></p>
   </div>
 </body>
 </html>

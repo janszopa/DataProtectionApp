@@ -10,8 +10,14 @@
 <body>
   <div class="login-container">
     <h1>Logowanie</h1>
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
     <form method="post">
         {% csrf_token %}
+
+        <input type="text" name="honeypot" style="display: none;" autocomplete="off">
+        
         <div class="form-group">
             <input type="text" id="username" name="username" placeholder="Nazwa użytkownika">
         </div>
@@ -20,7 +26,8 @@
         </div>
         <button type="submit" class="btn">Zaloguj</button>
     </form>
-    <a href="/register/" class="register-link">Nie masz konta? Zarejestruj się</a>
+    <p><a href="/register/" class="register-link">Nie masz konta? Zarejestruj się</a></p>
+    <p><a href="{% url 'reset_password' %}">Zapomniałeś hasła?</a></p>
   </div>
 </body>
 </html>

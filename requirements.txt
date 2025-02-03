@@ -7,3 +7,6 @@ django-axes
 pyotp
 qrcode
 Pillow
+python-decouple
+dj-database-url
+django-csp

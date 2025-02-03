@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weryfikacja wiadomości</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+
+<body>
+    <div>
+        <h2>Weryfikacja wiadomości</h2>
+        {% if error %}
+        <p style="color: red;">{{ error }}</p>
+        {% else %}
+        <p><strong>Treść wiadomości:</strong> {{ message.content }}</p>
+        <p><strong>Autor:</strong> {{ message.user.username }}</p>
+        <p>
+            <strong>Status weryfikacji:</strong>
+            {% if is_verified %}
+                <span style="color: green;">Zweryfikowany</span>
+            {% else %}
+                <span style="color: red;">Niezweryfikowany</span>
+            {% endif %}
+        </p>
+        {% endif %}
+        <a href="{% url 'messages' %}">Powrót</a>
+    </div>
+</body>

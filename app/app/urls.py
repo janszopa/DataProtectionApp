@@ -16,8 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views.user_views import login_view, register_view, logout_view, setup_2fa_view, verify_2fa_view, profile_view, change_password_view, verify_change_password_view
-from .views.message_views import messages_view, create_message_view
+from .views.user_views import login_view, register_view, logout_view, setup_2fa_view, verify_2fa_view, profile_view, change_password_view, verify_change_password_view, reset_password_view, verify_reset_password_view
+from .views.message_views import messages_view, create_message_view, verify_message_view
 
 urlpatterns = [
     path('', login_view, name='login'),
@@ -30,6 +30,7 @@ urlpatterns = [
     path('profile/', profile_view, name='profile'),
     path('change-password/', change_password_view, name='change_password'),
     path('verify-change-password/', verify_change_password_view, name='verify_change_password'),
-    #path('verify-message/', VerifyMessageView.as_view(), name='verify-message'),
-    
+    path('verify-message/<int:message_id>/', verify_message_view, name='verify_message'),    
+    path('reset-password/', reset_password_view, name='reset_password'),
+    path('verify-reset-password/', verify_reset_password_view, name='verify_reset_password'),
 ]

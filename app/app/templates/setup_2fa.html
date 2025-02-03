@@ -6,9 +6,11 @@
     <title>Włącz 2FA</title>
 </head>
 <body>
-    <h2>Włącz weryfikację dwuetapową</h2>
-    <p>Zeskanuj kod QR w aplikacji Google Authenticator:</p>
-    <img src="data:image/png;base64,{{ qr_base64 }}" alt="Kod QR">
-    <a href="{% url 'login' %}">Zakończ rejestrację</a>
+    <div>
+        <h2>Włącz weryfikację dwuetapową</h2>
+        <p>Zeskanuj kod QR w aplikacji Google Authenticator:</p>
+        <img src="data:image/png;base64,{{ qr_base64 }}" alt="Kod QR">
+        <a href="{% url 'login' %}">Zakończ rejestrację</a>
+    </div>
 </body>
 </html>
